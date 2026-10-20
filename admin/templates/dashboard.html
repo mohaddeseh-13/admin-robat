@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Assistly Dashboard</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            flex: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        select {
+            padding: 12px;
+            width: 350px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin-right: 10px;
+            background: #111827;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            text-align: right;
+        }
+
+        th {
+            background: #f9fafb;
+        }
+
+        .status {
+            color: green;
+            font-weight: bold;
+        }
+
+        .model-box {
+            margin-bottom: 30px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <strong>Assistly Admin</strong>
+
+    <a href="/logout">
+        خروج
+    </a>
+
+</header>
+
+
+<div class="container">
+
+    <h1>
+        داشبورد مدیریت
+    </h1>
+
+
+    <!-- کارت‌ها -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>
+                درخواست‌های کاربران
+            </h3>
+
+            <h2>
+                {{ requests|length }}
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                وضعیت ربات
+            </h3>
+
+            <h2 class="status">
+                🟢 فعال
+            </h2>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                مدل فعلی
+            </h3>
+
+            <h2>
+                LLM
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- انتخاب مدل -->
+
+    <div class="card model-box">
+
+        <h2>
+            🤖 تنظیم مدل هوش مصنوعی
+        </h2>
+
+        <p>
+            مدل مورد استفاده Assistly را انتخاب کنید:
+        </p>
+
+
+        <form method="POST" action="/change-model">
+
+            <select name="model">
+
+                {% for model in models %}
+
+                    <option
+                        value="{{ model }}"
+                        {% if model == current_model %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ model }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <button type="submit">
+                ذخیره مدل
+            </button>
+
+        </form>
+
+
+        <p style="margin-top: 15px; color: #666;">
+
+            مدل فعلی:
+            <strong>
+                {{ current_model }}
+            </strong>
+
+        </p>
+
+    </div>
+
+
+    <!-- درخواست‌ها -->
+
+    <div class="card">
+
+        <h2>
+            📋 درخواست‌های کاربران
+        </h2>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        اطلاعات درخواست
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in requests %}
+
+                <tr>
+
+                    <td>
+                        {{ item }}
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+
+                    <td>
+                        هنوز درخواستی ثبت نشده است.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
